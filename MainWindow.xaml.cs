@@ -11,6 +11,10 @@ using PdfSharp.Pdf.Security;
 using PdfSharp.Drawing;
 using NavajaSuizaPDF.Logica;
 using Tesseract;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Diagnostics;
 
 namespace NavajaSuizaPDF
 {
@@ -25,6 +29,99 @@ namespace NavajaSuizaPDF
         // MODO OSCURO
         // ==========================================
         private bool esModoOscuro = false;
+
+
+// CONFIGURACIÓN DE TU REPOSITORIO (¡CAMBIA ESTO!)
+        private const string GITHUB_USER = "gustavocazar3s-ship-it"; // Ej: JuanPerezDev
+        private const string GITHUB_REPO = "NavajaSuizaPDF.";    // El nombre de tu repo
+        private const string VERSION_ACTUAL = "3.0";            // Tu versión actual
+
+        private async void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    // GitHub exige un "User-Agent" para responder
+                    client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("NavajaSuizaApp", "1.0"));
+
+                    // Consultamos la última versión (Release)
+                    string urlApi = $"https://api.github.com/repos/{GITHUB_USER}/{GITHUB_REPO}/releases/latest";
+                    var response = await client.GetStringAsync(urlApi);
+
+                    // Buscamos la etiqueta "tag_name" en el JSON (manera rápida)
+                    using (JsonDocument doc = JsonDocument.Parse(response))
+                    {
+                        string ultimaVersion = doc.RootElement.GetProperty("tag_name").GetString();
+                        
+                        // Limpiamos la 'v' si existe (ej: v3.1 -> 3.1)
+                        string versionLimpia = ultimaVersion.Replace("v", "").Trim();
+
+                        // Comparamos
+                        if (EsVersionMayor(versionLimpia, VERSION_ACTUAL))
+                        {
+                            var resultado = MessageBox.Show(
+                                $"¡Nueva versión disponible: {ultimaVersion}!\n\nTu versión: {VERSION_ACTUAL}\n\n¿Quieres descargarla ahora?", 
+                                "Actualización Detectada", 
+                                MessageBoxButton.YesNo, 
+                                MessageBoxImage.Information);
+
+                            if (resultado == MessageBoxResult.Yes)
+                            {
+                                // Abrir el navegador en la página de descargas
+                                string urlDescarga = $"https://github.com/{GITHUB_USER}/{GITHUB_REPO}/releases/latest";
+                                Process.Start(new ProcessStartInfo { FileName = urlDescarga, UseShellExecute = true });
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("¡Ya tienes la última versión!", "Todo actualizado", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo buscar actualizaciones.\nRevisa tu internet o intenta más tarde.", "Error de Conexión");
+            }
+        }
+
+        // Función auxiliar para comparar versiones (Ej: 3.1 es mayor que 3.0)
+        private bool EsVersionMayor(string nueva, string actual)
+        {
+            try
+            {
+                var vNueva = new Version(nueva);
+                var vActual = new Version(actual);
+                return vNueva > vActual;
+            }
+            catch
+            {
+                // Si falla la conversión, comparamos texto simple
+                return string.Compare(nueva, actual) > 0;
+            }
+        }
+
+        // Función para abrir el enlace de donación
+private void btnDonar_Click(object sender, RoutedEventArgs e)
+{
+    // CAMBIA ESTO POR TU LINK DE KO-FI REAL
+    string urlDestino = "https://ko-fi.com/fibrici"; 
+
+    try
+    {
+        // Truco para abrir navegador en .NET moderno
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = urlDestino,
+            UseShellExecute = true
+        });
+    }
+    catch (Exception)
+    {
+        MessageBox.Show("No se pudo abrir el enlace. Visita: " + urlDestino);
+    }
+}
 
         private void btnTema_Click(object sender, RoutedEventArgs e)
         {
