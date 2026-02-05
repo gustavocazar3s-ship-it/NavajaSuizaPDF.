@@ -35,4 +35,12 @@ Diseñado y ensamblado por FIBRICI LABS.
 ============================================================
 
 
+
+
+
+
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Ko-fi.com/fibrici)
+
+
+
+
