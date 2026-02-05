@@ -1,0 +1,176 @@
+﻿<Window x:Class="NavajaSuizaPDF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Navaja Suiza PDF" Height="800" Width="1000"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResize">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="BrushFondo" Color="#F3F4F6"/>
+        <SolidColorBrush x:Key="BrushTarjeta" Color="White"/>
+        <SolidColorBrush x:Key="BrushTextoTitulo" Color="#1E293B"/>
+        <SolidColorBrush x:Key="BrushTextoSub" Color="#64748B"/>
+        <SolidColorBrush x:Key="BrushMarcaFondo" Color="#EFF6FF"/>
+        <SolidColorBrush x:Key="BrushMarcaTexto" Color="#2563EB"/>
+
+        <Style x:Key="BotonTarjeta" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource BrushTarjeta}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bdr" CornerRadius="15" Background="{TemplateBinding Background}" Padding="20">
+                            <Border.Effect>
+                                <DropShadowEffect Color="Black" BlurRadius="15" ShadowDepth="4" Direction="270" Opacity="0.1"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bdr" Property="Opacity" Value="0.8"/>
+                                <Setter TargetName="bdr" Property="Margin" Value="10,5,10,15"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bdr" Property="Opacity" Value="0.6"/>
+                                <Setter TargetName="bdr" Property="Margin" Value="10,12,10,8"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bdr" Property="Opacity" Value="0.3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="{DynamicResource BrushFondo}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> <RowDefinition Height="*"/>    <RowDefinition Height="Auto"/> </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,30,0,10">
+                <StackPanel>
+                    <TextBlock Text="NAVAJA SUIZA PDF" FontFamily="Segoe UI" FontWeight="Black" FontSize="32" Foreground="{DynamicResource BrushTextoTitulo}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Herramientas de ofimática profesional" FontFamily="Segoe UI" FontSize="16" Foreground="{DynamicResource BrushTextoSub}" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                </StackPanel>
+                <Button x:Name="btnTema" Click="btnTema_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,30,0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <TextBlock Text="🌙" FontSize="24"/>
+                </Button>
+            </Grid>
+
+            <UniformGrid Grid.Row="1" Columns="3" Margin="40,10,40,10">
+                <Button x:Name="btnWordToPdf" Style="{StaticResource BotonTarjeta}" Click="btnWordToPdf_Click">
+                    <StackPanel>
+                        <TextBlock Text="📄 ➔ 📕" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource BrushTextoTitulo}"/>
+                        <TextBlock Text="Word a PDF" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource BrushTextoTitulo}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Convertir .docx" FontSize="12" Foreground="{DynamicResource BrushTextoSub}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnMergePdf" Style="{StaticResource BotonTarjeta}" Click="btnMergePdf_Click">
+                    <StackPanel>
+                        <TextBlock Text="📕 + 📕" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource BrushTextoTitulo}"/>
+                        <TextBlock Text="Unir PDFs" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource BrushTextoTitulo}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Juntar archivos" FontSize="12" Foreground="{DynamicResource BrushTextoSub}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnImgToPdf" Style="{StaticResource BotonTarjeta}" Click="btnImgToPdf_Click">
+                    <StackPanel>
+                        <TextBlock Text="🖼️ ➔ 📕" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource BrushTextoTitulo}"/>
+                        <TextBlock Text="Imágenes a PDF" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource BrushTextoTitulo}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Fotos a documento" FontSize="12" Foreground="{DynamicResource BrushTextoSub}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnPdfToWord" Style="{StaticResource BotonTarjeta}" Click="btnPdfToWord_Click">
+                    <StackPanel>
+                        <TextBlock Text="📕 ➔ 📄" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource BrushTextoTitulo}"/>
+                        <TextBlock Text="PDF a Word" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource BrushTextoTitulo}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Hacer editable" FontSize="12" Foreground="{DynamicResource BrushTextoSub}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnCompressPdf" Style="{StaticResource BotonTarjeta}" Click="btnCompressPdf_Click">
+                    <StackPanel>
+                        <TextBlock Text="📉" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource BrushTextoTitulo}"/>
+                        <TextBlock Text="Comprimir PDF" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource BrushTextoTitulo}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Reducir peso" FontSize="12" Foreground="{DynamicResource BrushTextoSub}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnProtectPdf" Style="{StaticResource BotonTarjeta}" Click="btnProtectPdf_Click">
+                    <StackPanel>
+                        <TextBlock Text="🔒" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource BrushTextoTitulo}"/>
+                        <TextBlock Text="Proteger PDF" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource BrushTextoTitulo}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Poner contraseña" FontSize="12" Foreground="{DynamicResource BrushTextoSub}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnWatermark" Style="{StaticResource BotonTarjeta}" Click="btnWatermark_Click">
+                    <StackPanel>
+                        <TextBlock Text="©" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource BrushTextoTitulo}"/>
+                        <TextBlock Text="Marca de Agua" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource BrushTextoTitulo}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Estampar texto" FontSize="12" Foreground="{DynamicResource BrushTextoSub}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnUnlockPdf" Style="{StaticResource BotonTarjeta}" Click="btnUnlockPdf_Click">
+                    <StackPanel>
+                        <TextBlock Text="🔓" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource BrushTextoTitulo}"/>
+                        <TextBlock Text="Desbloquear" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource BrushTextoTitulo}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Quitar restricciones" FontSize="12" Foreground="{DynamicResource BrushTextoSub}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnOcr" Style="{StaticResource BotonTarjeta}" Click="btnOcr_Click">
+                    <StackPanel>
+                        <TextBlock Text="👁️" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource BrushTextoTitulo}"/>
+                        <TextBlock Text="OCR / Escáner" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource BrushTextoTitulo}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Imagen a Texto" FontSize="12" Foreground="{DynamicResource BrushTextoSub}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnSplitPdf" Style="{StaticResource BotonTarjeta}" Click="btnSplitPdf_Click">
+                    <StackPanel>
+                        <TextBlock Text="✂️" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource BrushTextoTitulo}"/>
+                        <TextBlock Text="Extraer Páginas" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource BrushTextoTitulo}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Sacar rango (ej. 1-3)" FontSize="12" Foreground="{DynamicResource BrushTextoSub}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnRotatePdf" Style="{StaticResource BotonTarjeta}" Click="btnRotatePdf_Click">
+                    <StackPanel>
+                        <TextBlock Text="🔄" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource BrushTextoTitulo}"/>
+                        <TextBlock Text="Rotar PDF" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource BrushTextoTitulo}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Girar 90° derecha" FontSize="12" Foreground="{DynamicResource BrushTextoSub}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnMetadata" Style="{StaticResource BotonTarjeta}" Click="btnMetadata_Click">
+                    <StackPanel>
+                        <TextBlock Text="🕵️" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="{DynamicResource BrushTextoTitulo}"/>
+                        <TextBlock Text="Limpiar Datos" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource BrushTextoTitulo}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Borrar autor/título" FontSize="12" Foreground="{DynamicResource BrushTextoSub}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </UniformGrid>
+
+            <Border Grid.Row="2" Background="{DynamicResource BrushTarjeta}" Padding="15,10,15,15" Margin="0,10,0,0">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="-2" Opacity="0.05" Direction="90"/>
+                </Border.Effect>
+                <StackPanel>
+                    <ProgressBar x:Name="pbProgreso" Height="4" Margin="0,0,0,12" Value="0" Visibility="Hidden" Background="Transparent" BorderThickness="0" Foreground="#3B82F6"/>
+                    <DockPanel LastChildFill="False">
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" VerticalAlignment="Center">
+                            <TextBlock Text="Status: " Foreground="{DynamicResource BrushTextoSub}" FontSize="12"/>
+                            <TextBlock x:Name="txtStatus" Text="Esperando órdenes..." FontWeight="SemiBold" Foreground="{DynamicResource BrushTextoTitulo}" FontSize="12"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center" Cursor="Hand">
+                            <TextBlock Text="Developed by " Foreground="{DynamicResource BrushTextoSub}" FontSize="12" VerticalAlignment="Bottom" Margin="0,0,5,0"/>
+                            <Border Background="{DynamicResource BrushMarcaFondo}" CornerRadius="5" Padding="8,4">
+                                <TextBlock Text="⚡ FIBRICI LABS" FontFamily="Segoe UI" FontWeight="Black" FontSize="12" Foreground="{DynamicResource BrushMarcaTexto}"/>
+                            </Border>
+                            <TextBlock Text=" v3.0" Foreground="{DynamicResource BrushTextoSub}" FontSize="10" VerticalAlignment="Bottom" Margin="5,0,0,2"/>
+                        </StackPanel>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
